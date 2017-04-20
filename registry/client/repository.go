@@ -756,6 +756,7 @@ func (bs *blobs) Create(ctx context.Context, options ...distribution.BlobCreateO
 }
 
 func (bs *blobs) Resume(ctx context.Context, id string) (distribution.BlobWriter, error) {
+	context.GetLogger(ctx).Infof("called in repository resume UUID:%v\n", id)
 	panic("not implemented")
 }
 

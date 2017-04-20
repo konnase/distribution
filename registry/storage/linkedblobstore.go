@@ -175,7 +175,7 @@ func (lbs *linkedBlobStore) Create(ctx context.Context, options ...distribution.
 
 func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution.BlobWriter, error) {
 	context.GetLogger(ctx).Debug("(*linkedBlobStore).Resume")
-
+	context.GetLogger(ctx).Infof("called in linkedblobstore resume UUID:%v\n", id)
 	startedAtPath, err := pathFor(uploadStartedAtPathSpec{
 		name: lbs.repository.Named().Name(),
 		id:   id,
@@ -186,6 +186,7 @@ func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution
 	}
 
 	startedAtBytes, err := lbs.blobStore.driver.GetContent(ctx, startedAtPath)
+	fmt.Println(string(startedAtBytes))
 	if err != nil {
 		switch err := err.(type) {
 		case driver.PathNotFoundError:

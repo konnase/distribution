@@ -5,8 +5,10 @@ log:
 storage:
   cache:
     blobdescriptor: inmemory
-  filesystem:
-    rootdirectory: /var/lib/registry
+  gluster:
+    host: localhost
+    volname: datapoint
+    mountDirectory: /mnt/gluster
 http:
   addr: :5000
   headers:

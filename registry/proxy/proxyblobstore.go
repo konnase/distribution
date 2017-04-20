@@ -208,6 +208,7 @@ func (pbs *proxyBlobStore) Create(ctx context.Context, options ...distribution.B
 }
 
 func (pbs *proxyBlobStore) Resume(ctx context.Context, id string) (distribution.BlobWriter, error) {
+	context.GetLogger(ctx).Infof("called in proxyblobstore resume UUID:%v\n", id)
 	return nil, distribution.ErrUnsupported
 }
 

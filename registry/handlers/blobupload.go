@@ -2,9 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-	"net/url"
-
 	"github.com/docker/distribution"
 	ctxu "github.com/docker/distribution/context"
 	"github.com/docker/distribution/reference"
@@ -13,6 +10,9 @@ import (
 	"github.com/docker/distribution/registry/storage"
 	"github.com/gorilla/handlers"
 	"github.com/opencontainers/go-digest"
+	"net/http"
+	"net/url"
+	//"reflect"
 )
 
 // blobUploadDispatcher constructs and returns the blob upload handler for the
@@ -36,6 +36,12 @@ func blobUploadDispatcher(ctx *Context, r *http.Request) http.Handler {
 	}
 
 	if buh.UUID != "" {
+		fmt.Println("check state")
+		ctxu.GetLogger(ctx).Infof(ctx.Config.HTTP.Secret)
+		fmt.Println("\n")
+		ctxu.GetLogger(ctx).Infof(r.FormValue("_state"))
+		fmt.Println("\n")
+		//fmt.Println("\n")
 		state, err := hmacKey(ctx.Config.HTTP.Secret).unpackUploadState(r.FormValue("_state"))
 		if err != nil {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +50,7 @@ func blobUploadDispatcher(ctx *Context, r *http.Request) http.Handler {
 			})
 		}
 		buh.State = state
-
+		fmt.Println("state has been checked")
 		if state.Name != ctx.Repository.Named().Name() {
 			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				ctxu.GetLogger(ctx).Infof("mismatched repository name in upload state: %q != %q", state.Name, buh.Repository.Named().Name())
@@ -58,9 +64,12 @@ func blobUploadDispatcher(ctx *Context, r *http.Request) http.Handler {
 				buh.Errors = append(buh.Errors, v2.ErrorCodeBlobUploadInvalid.WithDetail(err))
 			})
 		}
-
+		fmt.Println("work in blobs")
 		blobs := ctx.Repository.Blobs(buh)
-		upload, err := blobs.Resume(buh, buh.UUID)
+		upload, err := blobs.Resume(buh, buh.UUID) //先调用listen.go里面的Resume 后调用linkedblobstore里面的Resume
+		fmt.Println(buh)
+		fmt.Println(buh.UUID)
+		fmt.Println(blobs)
 		if err != nil {
 			ctxu.GetLogger(ctx).Errorf("error resolving upload: %v", err)
 			if err == distribution.ErrBlobUploadUnknown {
@@ -74,7 +83,7 @@ func blobUploadDispatcher(ctx *Context, r *http.Request) http.Handler {
 			})
 		}
 		buh.Upload = upload
-
+		fmt.Println("blobs finished")
 		if size := upload.Size(); size != buh.State.Offset {
 			defer upload.Close()
 			ctxu.GetLogger(ctx).Errorf("upload resumed at wrong offest: %d != %d", size, buh.State.Offset)
