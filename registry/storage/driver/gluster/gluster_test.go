@@ -41,8 +41,7 @@ func TestNew(t *testing.T) {
 		fmt.Printf("%v\n", err4)
 		//os.Exit(0)
 	}
-
-	var tmp string = "hello everyone!"
+	var tmp string = "2017-04-21T14:16:45Z"
 	cont := []byte(tmp)
 	n, err := f.Write(cont)
 	if err != nil {
@@ -66,16 +65,26 @@ func TestNew(t *testing.T) {
 	if err2 != nil {
 		fmt.Printf("%v\n", err2)
 	}
-	fmt.Printf("%d bytes read!  %s\n", n, string(p))
-	file.Close() //io.ReadCloser only has two methods ,that is Read() and Close()
-
-	//Test GetContent()  该方法里面的ioutil.ReadAll(rc)执行后不返回值，有待解决
-	fmt.Printf("\nTest GetContent !\n")
-	contents, err := d.GetContent(nil, "/tests/hello.txt")
+	times, err := time.Parse(time.RFC3339, string(p))
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Get contents: %s\n", string(contents))
+	fmt.Printf("Time is %v\n", times)
+	fmt.Printf("%d bytes read!  !%s!\n", n, string(p))
+	file.Close() //io.ReadCloser only has two methods ,that is Read() and Close()
+
+	//Test GetContent()  该方法里面的ioutil.ReadAll(rc)执行后不返回值，有待解决
+	// fmt.Printf("\nTest GetContent !\n")
+	// contents, err := d.GetContent(nil, "/tests/hello.txt")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// times, err := time.Parse(time.RFC3339, string(contents))
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Printf("Get contents: %s\n", string(contents))
+	// fmt.Printf("Time is %v\n", times)
 
 	//Test PutContent()
 	// fmt.Printf("\nTest PutContent !\n")
@@ -105,9 +114,9 @@ func TestNew(t *testing.T) {
 	// }
 
 	//Test Delete()
-	fmt.Printf("\nTest Delete !\n")
-	err = d.Delete(nil, "/test.go")
-	if err != nil {
-		fmt.Println(err)
-	}
+	// fmt.Printf("\nTest Delete !\n")
+	// err = d.Delete(nil, "/test.go")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 }

@@ -189,6 +189,9 @@ func (bsl *blobServiceListener) Delete(ctx context.Context, dgst digest.Digest) 
 func (bsl *blobServiceListener) Resume(ctx context.Context, id string) (distribution.BlobWriter, error) {
 	context.GetLogger(ctx).Infof("Called in listener resume UUID is:%v\n", id)
 	wr, err := bsl.BlobStore.Resume(ctx, id)
+	if err != nil {
+		context.GetLogger(ctx).Infof("we found error when called resume %v\n", err)
+	}
 	context.GetLogger(ctx).Infof("now we go to decorateWriter\n")
 	return bsl.decorateWriter(wr), err
 }

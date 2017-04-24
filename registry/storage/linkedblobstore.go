@@ -186,7 +186,7 @@ func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution
 	}
 
 	startedAtBytes, err := lbs.blobStore.driver.GetContent(ctx, startedAtPath)
-	fmt.Println(string(startedAtBytes))
+	fmt.Printf("%s|||||\n", string(startedAtBytes))
 	if err != nil {
 		switch err := err.(type) {
 		case driver.PathNotFoundError:
@@ -195,12 +195,12 @@ func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution
 			return nil, err
 		}
 	}
-
-	startedAt, err := time.Parse(time.RFC3339, string(startedAtBytes))
+	s := string(startedAtBytes)
+	startedAt, err := time.Parse(time.RFC3339, s)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("Not Parse error")
 	path, err := pathFor(uploadDataPathSpec{
 		name: lbs.repository.Named().Name(),
 		id:   id,
