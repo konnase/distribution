@@ -1,6 +1,7 @@
 package gorelic
 
 import (
+	"fmt"
 	metrics "github.com/yvasiyarov/go-metrics"
 	"github.com/yvasiyarov/newrelic_platform_go"
 	"net/http"
@@ -31,6 +32,7 @@ func newHTTPHandler(h http.Handler) *tHTTPHandler {
 }
 
 func (handler *tHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("called in http_metrics ServeHTTP\n")
 	startTime := time.Now()
 	defer handler.timer.UpdateSince(startTime)
 

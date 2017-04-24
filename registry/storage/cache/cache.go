@@ -19,6 +19,7 @@ type BlobDescriptorCacheProvider interface {
 // ValidateDescriptor provides a helper function to ensure that caches have
 // common criteria for admitting descriptors.
 func ValidateDescriptor(desc distribution.Descriptor) error {
+	fmt.Println("Called in cache ValidateDescriptor ")
 	if err := desc.Digest.Validate(); err != nil {
 		return err
 	}

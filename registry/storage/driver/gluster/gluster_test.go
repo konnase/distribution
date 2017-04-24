@@ -6,6 +6,8 @@ import (
 	"fmt"
 	//"github.com/docker/distribution/context"
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
+	//"string"
+	"strings"
 	"testing"
 	"time"
 	//"github.com/gluster/gogfapi/gfapi"
@@ -51,7 +53,7 @@ func TestNew(t *testing.T) {
 	f.Commit()
 	//f.Cancel()
 	f.Close()
-	time.Sleep(time.Second)
+	time.Sleep(10 * time.Millisecond)
 
 	//Test reader()
 	fmt.Printf("\nTest Reader !\n")
@@ -65,7 +67,9 @@ func TestNew(t *testing.T) {
 	if err2 != nil {
 		fmt.Printf("%v\n", err2)
 	}
-	times, err := time.Parse(time.RFC3339, string(p))
+	tmp1 := byteToString(p)
+	fmt.Println(strings.EqualFold(tmp1, tmp))
+	times, err := time.Parse(time.RFC3339, tmp1)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -119,4 +123,13 @@ func TestNew(t *testing.T) {
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
+}
+
+func byteToString(p []byte) string {
+	for i := 0; i < len(p); i++ {
+		if p[i] == 0 {
+			return string(p[0:i])
+		}
+	}
+	return string(p)
 }

@@ -109,6 +109,7 @@ func NewHandler(requestResponseMap RequestResponseMap) http.Handler {
 }
 
 func (app *testHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in testutil/handler ServeHTTP")
 	defer r.Body.Close()
 
 	requestBody, _ := ioutil.ReadAll(r.Body)

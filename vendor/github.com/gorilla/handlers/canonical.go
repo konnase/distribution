@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -37,6 +38,7 @@ func CanonicalHost(domain string, code int) func(h http.Handler) http.Handler {
 }
 
 func (c canonical) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in canonical ServeHTTP\n")
 	dest, err := url.Parse(c.domain)
 	if err != nil {
 		// Call the next handler if the provided domain fails to parse.

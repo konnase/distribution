@@ -2,11 +2,11 @@ package digestset
 
 import (
 	"errors"
+	"fmt"
+	digest "github.com/opencontainers/go-digest"
 	"sort"
 	"strings"
 	"sync"
-
-	digest "github.com/opencontainers/go-digest"
 )
 
 var (
@@ -77,6 +77,7 @@ func (dst *Set) Lookup(d string) (digest.Digest, error) {
 		alg        digest.Algorithm
 		hex        string
 	)
+	fmt.Println("\n\ncalled in set lookup\n\n")
 	dgst, err := digest.Parse(d)
 	if err == digest.ErrDigestInvalidFormat {
 		hex = d
@@ -111,6 +112,7 @@ func (dst *Set) Lookup(d string) (digest.Digest, error) {
 // if the given digest is invalid. If the digest already exists in the
 // set, this operation will be a no-op.
 func (dst *Set) Add(d digest.Digest) error {
+	fmt.Println("\n\nCalled in set.Add\n\n")
 	if err := d.Validate(); err != nil {
 		return err
 	}

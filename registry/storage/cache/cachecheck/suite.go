@@ -1,13 +1,13 @@
 package cachecheck
 
 import (
-	"reflect"
-	"testing"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/registry/storage/cache"
 	"github.com/opencontainers/go-digest"
+	"reflect"
+	"testing"
 )
 
 // CheckBlobDescriptorCache takes a cache implementation through a common set
@@ -25,7 +25,7 @@ func checkBlobDescriptorCacheEmptyRepository(ctx context.Context, t *testing.T, 
 	if _, err := provider.Stat(ctx, "sha384:abc111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"); err != distribution.ErrBlobUnknown {
 		t.Fatalf("expected unknown blob error with empty store: %v", err)
 	}
-
+	fmt.Println("\nsuite\n")
 	cache, err := provider.RepositoryScoped("")
 	if err == nil {
 		t.Fatalf("expected an error when asking for invalid repo")
@@ -65,7 +65,7 @@ func checkBlobDescriptorCacheSetAndRead(ctx context.Context, t *testing.T, provi
 		Digest:    "sha256:abc1111111111111111111111111111111111111111111111111111111111111",
 		Size:      10,
 		MediaType: "application/octet-stream"}
-
+	fmt.Println("\nsuite\n")
 	cache, err := provider.RepositoryScoped("foo/bar")
 	if err != nil {
 		t.Fatalf("unexpected error getting scoped cache: %v", err)
@@ -149,7 +149,7 @@ func checkBlobDescriptorCacheClear(ctx context.Context, t *testing.T, provider c
 		Digest:    "sha256:def1111111111111111111111111111111111111111111111111111111111111",
 		Size:      10,
 		MediaType: "application/octet-stream"}
-
+	fmt.Println("\nsuite\n")
 	cache, err := provider.RepositoryScoped("foo/bar")
 	if err != nil {
 		t.Fatalf("unexpected error getting scoped cache: %v", err)

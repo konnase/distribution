@@ -1,14 +1,14 @@
 package storage
 
 import (
-	"regexp"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/distribution/registry/storage/cache"
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
 	"github.com/docker/libtrust"
+	"regexp"
 )
 
 // registry is the top-level implementation of Registry for use in the storage
@@ -154,6 +154,7 @@ func (reg *registry) Scope() distribution.Scope {
 // Instances should not be shared between goroutines but are cheap to
 // allocate. In general, they should be request scoped.
 func (reg *registry) Repository(ctx context.Context, canonicalName reference.Named) (distribution.Repository, error) {
+	fmt.Println("RepositoryScoped called in registry/storage/registry")
 	var descriptorCache distribution.BlobDescriptorService
 	if reg.blobDescriptorCacheProvider != nil {
 		var err error
@@ -162,7 +163,7 @@ func (reg *registry) Repository(ctx context.Context, canonicalName reference.Nam
 			return nil, err
 		}
 	}
-
+	fmt.Println("RepositoryScoped called in registry/storage/registry")
 	return &repository{
 		ctx:             ctx,
 		registry:        reg,

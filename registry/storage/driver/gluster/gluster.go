@@ -124,7 +124,7 @@ func (d *driver) GetContent(ctx context.Context, path string) ([]byte, error) {
 	}
 	defer rc.Close()
 	fmt.Println("reader has been executed!")
-	var p0 [204800]byte
+	var p0 [2048]byte
 	p := p0[:]
 	_, err = rc.Read(p)
 	//p, err := ioutil.ReadAll(rc)

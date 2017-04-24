@@ -239,6 +239,7 @@ func Parse(s string) (Reference, error) {
 // If an error was encountered it is returned, along with a nil Reference.
 // NOTE: ParseNamed will not handle short digests.
 func ParseNamed(s string) (Named, error) {
+	fmt.Println("\n\nParseNamed in reference\n\n")
 	named, err := ParseNormalizedNamed(s)
 	if err != nil {
 		return nil, err

@@ -195,7 +195,7 @@ func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution
 			return nil, err
 		}
 	}
-	s := string(startedAtBytes)
+	s := byteToString(startedAtBytes)
 	startedAt, err := time.Parse(time.RFC3339, s)
 	if err != nil {
 		return nil, err
@@ -211,6 +211,15 @@ func (lbs *linkedBlobStore) Resume(ctx context.Context, id string) (distribution
 	}
 
 	return lbs.newBlobUpload(ctx, id, path, startedAt, true)
+}
+
+func byteToString(p []byte) string {
+	for i := 0; i < len(p); i++ {
+		if p[i] == 0 {
+			return string(p[0:i])
+		}
+	}
+	return string(p)
 }
 
 func (lbs *linkedBlobStore) Delete(ctx context.Context, dgst digest.Digest) error {

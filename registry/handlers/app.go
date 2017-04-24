@@ -594,6 +594,7 @@ func (app *App) configureSecret(configuration *configuration.Configuration) {
 }
 
 func (app *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in app ServeHTTP\n")
 	defer r.Body.Close() // ensure that request body is always closed.
 
 	// Prepare the context with our own little decorations.
@@ -660,6 +661,7 @@ func (app *App) dispatcher(dispatch dispatchFunc) http.Handler {
 				}
 				return
 			}
+			fmt.Println("called in app dispatcher")
 			repository, err := app.registry.Repository(context, nameRef)
 
 			if err != nil {
@@ -696,18 +698,20 @@ func (app *App) dispatcher(dispatch dispatchFunc) http.Handler {
 				return
 			}
 		}
-
+		fmt.Println("called in app dispatcher middle\n")
 		dispatch(context, r).ServeHTTP(w, r)
 		// Automated error response handling here. Handlers may return their
 		// own errors if they need different behavior (such as range errors
 		// for layer upload).
+		fmt.Println("called in app dispatcher finished\n")
 		if context.Errors.Len() > 0 {
 			if err := errcode.ServeJSON(w, context.Errors); err != nil {
 				ctxu.GetLogger(context).Errorf("error serving error json: %v (from %v)", err, context.Errors)
 			}
-
+			fmt.Println("hello")
 			app.logError(context, context.Errors)
 		}
+
 	})
 }
 

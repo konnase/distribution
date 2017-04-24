@@ -44,7 +44,7 @@ func ParseNormalizedNamed(s string) (Named, error) {
 	if strings.ToLower(remoteName) != remoteName {
 		return nil, errors.New("invalid reference format: repository name must be lowercase")
 	}
-
+	fmt.Println("\n\nparseNormalizedNamed\n\n")
 	ref, err := Parse(domain + "/" + remainder)
 	if err != nil {
 		return nil, err
@@ -53,6 +53,7 @@ func ParseNormalizedNamed(s string) (Named, error) {
 	if !isNamed {
 		return nil, fmt.Errorf("reference %s has no name", ref.String())
 	}
+	fmt.Println("\n\nparseNormalizedNamed finished\n\n")
 	return named, nil
 }
 
@@ -145,6 +146,7 @@ func ParseAnyReference(ref string) (Reference, error) {
 	if ok := anchoredIdentifierRegexp.MatchString(ref); ok {
 		return digestReference("sha256:" + ref), nil
 	}
+	fmt.Println("\n\nparseanyreference\n\n")
 	if dgst, err := digest.Parse(ref); err == nil {
 		return digestReference(dgst), nil
 	}
@@ -155,6 +157,7 @@ func ParseAnyReference(ref string) (Reference, error) {
 // ParseAnyReferenceWithSet parses a reference string as a possible short
 // identifier to be matched in a digest set, a full digest, or familiar name.
 func ParseAnyReferenceWithSet(ref string, ds *digestset.Set) (Reference, error) {
+	fmt.Println("\n\ndfsdfds\n\n")
 	if ok := anchoredShortIdentifierRegexp.MatchString(ref); ok {
 		dgst, err := ds.Lookup(ref)
 		if err == nil {

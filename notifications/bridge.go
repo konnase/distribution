@@ -1,14 +1,14 @@
 package notifications
 
 import (
-	"net/http"
-	"time"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/distribution/uuid"
 	"github.com/opencontainers/go-digest"
+	"net/http"
+	"time"
 )
 
 type bridge struct {
@@ -118,6 +118,7 @@ func (b *bridge) createManifestEventAndWrite(action string, repo reference.Named
 }
 
 func (b *bridge) createManifestDeleteEventAndWrite(action string, repo reference.Named, dgst digest.Digest) error {
+	fmt.Println("\ncalled in bridge createManifestDelete\n")
 	event := b.createEvent(action)
 	event.Target.Repository = repo.Name()
 	event.Target.Digest = dgst

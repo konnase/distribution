@@ -242,6 +242,7 @@ func (mb *configManifestBuilder) emptyTar(ctx context.Context) (digest.Digest, e
 func (mb *configManifestBuilder) AppendReference(d distribution.Describable) error {
 	descriptor := d.Descriptor()
 
+	fmt.Println("Called in config-builder AppendReference ")
 	if err := descriptor.Digest.Validate(); err != nil {
 		return err
 	}

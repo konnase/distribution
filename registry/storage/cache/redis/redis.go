@@ -41,6 +41,7 @@ func NewRedisBlobDescriptorCacheProvider(pool *redis.Pool) cache.BlobDescriptorC
 
 // RepositoryScoped returns the scoped cache.
 func (rbds *redisBlobDescriptorService) RepositoryScoped(repo string) (distribution.BlobDescriptorService, error) {
+	fmt.Println("called in redis RepositoryScoped")
 	if _, err := reference.ParseNormalizedNamed(repo); err != nil {
 		return nil, err
 	}
@@ -53,6 +54,7 @@ func (rbds *redisBlobDescriptorService) RepositoryScoped(repo string) (distribut
 
 // Stat retrieves the descriptor data from the redis hash entry.
 func (rbds *redisBlobDescriptorService) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("\n\nCalled in stat\n\n")
 	if err := dgst.Validate(); err != nil {
 		return distribution.Descriptor{}, err
 	}
@@ -64,6 +66,7 @@ func (rbds *redisBlobDescriptorService) Stat(ctx context.Context, dgst digest.Di
 }
 
 func (rbds *redisBlobDescriptorService) Clear(ctx context.Context, dgst digest.Digest) error {
+	fmt.Println("\n\nCalled in clear\n\n")
 	if err := dgst.Validate(); err != nil {
 		return err
 	}
@@ -111,6 +114,7 @@ func (rbds *redisBlobDescriptorService) stat(ctx context.Context, conn redis.Con
 // hash. A hash is used here since we may store unrelated fields about a layer
 // in the future.
 func (rbds *redisBlobDescriptorService) SetDescriptor(ctx context.Context, dgst digest.Digest, desc distribution.Descriptor) error {
+	fmt.Println("\n\nCalled in SetDescriptor\n\n")
 	if err := dgst.Validate(); err != nil {
 		return err
 	}
@@ -156,6 +160,7 @@ var _ distribution.BlobDescriptorService = &repositoryScopedRedisBlobDescriptorS
 // forwards the descriptor request to the global blob store. If the media type
 // differs for the repository, we override it.
 func (rsrbds *repositoryScopedRedisBlobDescriptorService) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("called in service stat")
 	if err := dgst.Validate(); err != nil {
 		return distribution.Descriptor{}, err
 	}
@@ -193,6 +198,7 @@ func (rsrbds *repositoryScopedRedisBlobDescriptorService) Stat(ctx context.Conte
 
 // Clear removes the descriptor from the cache and forwards to the upstream descriptor store
 func (rsrbds *repositoryScopedRedisBlobDescriptorService) Clear(ctx context.Context, dgst digest.Digest) error {
+	fmt.Println("called in service clear")
 	if err := dgst.Validate(); err != nil {
 		return err
 	}
@@ -214,6 +220,7 @@ func (rsrbds *repositoryScopedRedisBlobDescriptorService) Clear(ctx context.Cont
 }
 
 func (rsrbds *repositoryScopedRedisBlobDescriptorService) SetDescriptor(ctx context.Context, dgst digest.Digest, desc distribution.Descriptor) error {
+	fmt.Println("called in service setdescriptor")
 	if err := dgst.Validate(); err != nil {
 		return err
 	}

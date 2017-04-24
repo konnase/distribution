@@ -35,6 +35,7 @@ type testAuthenticationWrapper struct {
 }
 
 func (w *testAuthenticationWrapper) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in session_test")
 	auth := r.Header.Get("Authorization")
 	if auth == "" || !w.authCheck(auth) {
 		h := rw.Header()

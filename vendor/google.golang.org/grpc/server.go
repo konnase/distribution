@@ -355,6 +355,7 @@ func (s *Server) serveUsingHandler(conn net.Conn) {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in server ServeHTTP\n")
 	st, err := transport.NewServerHandlerTransport(w, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

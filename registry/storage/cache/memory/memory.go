@@ -1,13 +1,13 @@
 package memory
 
 import (
-	"sync"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/reference"
 	"github.com/docker/distribution/registry/storage/cache"
 	"github.com/opencontainers/go-digest"
+	"sync"
 )
 
 type inMemoryBlobDescriptorCacheProvider struct {
@@ -26,10 +26,11 @@ func NewInMemoryBlobDescriptorCacheProvider() cache.BlobDescriptorCacheProvider 
 }
 
 func (imbdcp *inMemoryBlobDescriptorCacheProvider) RepositoryScoped(repo string) (distribution.BlobDescriptorService, error) {
+	fmt.Println("\n\nrepositoryScoped in memory\n\n")
 	if _, err := reference.ParseNormalizedNamed(repo); err != nil {
 		return nil, err
 	}
-
+	fmt.Println("\n\nrepositoryScoped in memory\n\n")
 	imbdcp.mu.RLock()
 	defer imbdcp.mu.RUnlock()
 
@@ -139,6 +140,7 @@ func newMapBlobDescriptorCache() *mapBlobDescriptorCache {
 }
 
 func (mbdc *mapBlobDescriptorCache) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("\n\nCalled in stat\n\n")
 	if err := dgst.Validate(); err != nil {
 		return distribution.Descriptor{}, err
 	}
@@ -163,6 +165,7 @@ func (mbdc *mapBlobDescriptorCache) Clear(ctx context.Context, dgst digest.Diges
 }
 
 func (mbdc *mapBlobDescriptorCache) SetDescriptor(ctx context.Context, dgst digest.Digest, desc distribution.Descriptor) error {
+	fmt.Println("\n\nCalled in memory.SetDescriptor\n\n")
 	if err := dgst.Validate(); err != nil {
 		return err
 	}

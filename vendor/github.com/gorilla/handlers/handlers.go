@@ -11,6 +11,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -31,9 +32,14 @@ import (
 type MethodHandler map[string]http.Handler
 
 func (h MethodHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("called in handler Methodhandler\n")
 	if handler, ok := h[req.Method]; ok {
+		fmt.Println("called in handler Methodhandler ok\n")
+		fmt.Println(reflect.TypeOf(handler))
+
 		handler.ServeHTTP(w, req)
 	} else {
+		fmt.Println("called in handler Methodhandler not ok\n")
 		allow := []string{}
 		for k := range h {
 			allow = append(allow, k)
@@ -46,6 +52,7 @@ func (h MethodHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	}
+	fmt.Println("called in handler Methodhandler finished\n")
 }
 
 // loggingHandler is the http.Handler implementation for LoggingHandlerTo and its friends
@@ -61,6 +68,7 @@ type combinedLoggingHandler struct {
 }
 
 func (h loggingHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("called in handler loggingHandler\n")
 	t := time.Now()
 	logger := makeLogger(w)
 	url := *req.URL
@@ -69,6 +77,7 @@ func (h loggingHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (h combinedLoggingHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("called in handlers combinedLoggingHandler")
 	t := time.Now()
 	logger := makeLogger(w)
 	url := *req.URL

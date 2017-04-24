@@ -450,6 +450,7 @@ func (repositoriesRootPathSpec) pathSpec() {}
 // 	<algorithm>/<first two bytes of digest>/<full digest>
 //
 func digestPathComponents(dgst digest.Digest, multilevel bool) ([]string, error) {
+	fmt.Println("called in paths")
 	if err := dgst.Validate(); err != nil {
 		return nil, err
 	}

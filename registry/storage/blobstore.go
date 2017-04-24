@@ -105,7 +105,7 @@ func (bs *blobStore) Enumerate(ctx context.Context, ingester func(dgst digest.Di
 		if fileName != "data" {
 			return nil
 		}
-
+		context.GetLogger(ctx).Infof("digestFromPath error")
 		digest, err := digestFromPath(currentPath)
 		if err != nil {
 			return err
