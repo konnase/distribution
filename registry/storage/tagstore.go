@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"path"
 
 	"github.com/docker/distribution"
@@ -94,6 +95,7 @@ func (ts *tagStore) Tag(ctx context.Context, tag string, desc distribution.Descr
 
 // resolve the current revision for name and tag.
 func (ts *tagStore) Get(ctx context.Context, tag string) (distribution.Descriptor, error) {
+	fmt.Println("called in tagstore get")
 	currentPath, err := pathFor(manifestTagCurrentPathSpec{
 		name: ts.repository.Named().Name(),
 		tag:  tag,
@@ -109,7 +111,7 @@ func (ts *tagStore) Get(ctx context.Context, tag string) (distribution.Descripto
 		case storagedriver.PathNotFoundError:
 			return distribution.Descriptor{}, distribution.ErrTagUnknown{Tag: tag}
 		}
-
+		fmt.Println(err)
 		return distribution.Descriptor{}, err
 	}
 

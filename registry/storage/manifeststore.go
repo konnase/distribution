@@ -68,6 +68,7 @@ func (ms *manifestStore) Exists(ctx context.Context, dgst digest.Digest) (bool, 
 }
 
 func (ms *manifestStore) Get(ctx context.Context, dgst digest.Digest, options ...distribution.ManifestServiceOption) (distribution.Manifest, error) {
+	fmt.Println("called in manifeststore get")
 	context.GetLogger(ms.ctx).Debug("(*manifestStore).Get")
 
 	// TODO(stevvooe): Need to check descriptor from above to ensure that the
@@ -84,7 +85,8 @@ func (ms *manifestStore) Get(ctx context.Context, dgst digest.Digest, options ..
 
 		return nil, err
 	}
-
+	fmt.Println("called in manifeststore get middle")
+	//fmt.Println(string(content))
 	var versioned manifest.Versioned
 	if err = json.Unmarshal(content, &versioned); err != nil {
 		return nil, err

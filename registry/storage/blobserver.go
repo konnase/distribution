@@ -24,6 +24,7 @@ type blobServer struct {
 }
 
 func (bs *blobServer) ServeBlob(ctx context.Context, w http.ResponseWriter, r *http.Request, dgst digest.Digest) error {
+	fmt.Println("called in blobserver serveBlob")
 	desc, err := bs.statter.Stat(ctx, dgst)
 	if err != nil {
 		return err

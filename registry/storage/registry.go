@@ -163,7 +163,7 @@ func (reg *registry) Repository(ctx context.Context, canonicalName reference.Nam
 			return nil, err
 		}
 	}
-	fmt.Println("RepositoryScoped called in registry/storage/registry")
+	fmt.Println("RepositoryScoped called in registry/storage/registry finished")
 	return &repository{
 		ctx:             ctx,
 		registry:        reg,

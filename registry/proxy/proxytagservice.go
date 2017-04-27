@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 )
@@ -18,6 +19,7 @@ var _ distribution.TagService = proxyTagService{}
 // tag service first and then caching it locally.  If the remote is unavailable
 // the local association is returned
 func (pt proxyTagService) Get(ctx context.Context, tag string) (distribution.Descriptor, error) {
+	fmt.Println("called in proxytagservice get")
 	err := pt.authChallenger.tryEstablishChallenges(ctx)
 	if err == nil {
 		desc, err := pt.remoteTags.Get(ctx, tag)

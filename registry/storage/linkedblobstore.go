@@ -46,10 +46,12 @@ type linkedBlobStore struct {
 var _ distribution.BlobStore = &linkedBlobStore{}
 
 func (lbs *linkedBlobStore) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("linkedblobstore Stat")
 	return lbs.blobAccessController.Stat(ctx, dgst)
 }
 
 func (lbs *linkedBlobStore) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) {
+	fmt.Println("linkedblobstore Get")
 	canonical, err := lbs.Stat(ctx, dgst) // access check
 	if err != nil {
 		return nil, err
@@ -391,6 +393,7 @@ type linkedBlobStatter struct {
 var _ distribution.BlobDescriptorService = &linkedBlobStatter{}
 
 func (lbs *linkedBlobStatter) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("linkedblobstore linkedblobstatter stat")
 	var (
 		found  bool
 		target digest.Digest
@@ -414,6 +417,7 @@ func (lbs *linkedBlobStatter) Stat(ctx context.Context, dgst digest.Digest) (dis
 			return distribution.Descriptor{}, err
 		}
 	}
+	fmt.Println("linkedblobstore linkedblobstatter stat finished")
 
 	if !found {
 		return distribution.Descriptor{}, distribution.ErrBlobUnknown

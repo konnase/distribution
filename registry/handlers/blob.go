@@ -1,14 +1,14 @@
 package handlers
 
 import (
-	"net/http"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/registry/api/errcode"
 	"github.com/docker/distribution/registry/api/v2"
 	"github.com/gorilla/handlers"
 	"github.com/opencontainers/go-digest"
+	"net/http"
 )
 
 // blobDispatcher uses the request context to build a blobHandler.
@@ -54,6 +54,7 @@ type blobHandler struct {
 // GetBlob fetches the binary data from backend storage returns it in the
 // response.
 func (bh *blobHandler) GetBlob(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("called in blob GetBlob")
 	context.GetLogger(bh).Debug("GetBlob")
 	blobs := bh.Repository.Blobs(bh)
 	desc, err := blobs.Stat(bh, bh.Digest)

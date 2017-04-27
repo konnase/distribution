@@ -26,11 +26,11 @@ func NewInMemoryBlobDescriptorCacheProvider() cache.BlobDescriptorCacheProvider 
 }
 
 func (imbdcp *inMemoryBlobDescriptorCacheProvider) RepositoryScoped(repo string) (distribution.BlobDescriptorService, error) {
-	fmt.Println("\n\nrepositoryScoped in memory\n\n")
+	fmt.Println("repositoryScoped in memory")
 	if _, err := reference.ParseNormalizedNamed(repo); err != nil {
 		return nil, err
 	}
-	fmt.Println("\n\nrepositoryScoped in memory\n\n")
+	fmt.Println("repositoryScoped in memory")
 	imbdcp.mu.RLock()
 	defer imbdcp.mu.RUnlock()
 

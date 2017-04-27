@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -160,6 +161,7 @@ func (pbs *proxyBlobStore) ServeBlob(ctx context.Context, w http.ResponseWriter,
 }
 
 func (pbs *proxyBlobStore) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("proxyblobstore stat")
 	desc, err := pbs.localStore.Stat(ctx, dgst)
 	if err == nil {
 		return desc, err
@@ -177,6 +179,7 @@ func (pbs *proxyBlobStore) Stat(ctx context.Context, dgst digest.Digest) (distri
 }
 
 func (pbs *proxyBlobStore) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) {
+	fmt.Println("called in proxyblobstore get")
 	blob, err := pbs.localStore.Get(ctx, dgst)
 	if err == nil {
 		return blob, nil

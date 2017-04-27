@@ -698,12 +698,12 @@ func (app *App) dispatcher(dispatch dispatchFunc) http.Handler {
 				return
 			}
 		}
-		fmt.Println("called in app dispatcher middle\n")
+		fmt.Println("called in app dispatcher middle")
 		dispatch(context, r).ServeHTTP(w, r)
 		// Automated error response handling here. Handlers may return their
 		// own errors if they need different behavior (such as range errors
 		// for layer upload).
-		fmt.Println("called in app dispatcher finished\n")
+		fmt.Println("called in app dispatcher finished")
 		if context.Errors.Len() > 0 {
 			if err := errcode.ServeJSON(w, context.Errors); err != nil {
 				ctxu.GetLogger(context).Errorf("error serving error json: %v (from %v)", err, context.Errors)

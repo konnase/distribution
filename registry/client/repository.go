@@ -619,6 +619,7 @@ func sanitizeLocation(location, base string) (string, error) {
 }
 
 func (bs *blobs) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("repository  blobs stat")
 	return bs.statter.Stat(ctx, dgst)
 
 }
@@ -771,6 +772,7 @@ type blobStatter struct {
 }
 
 func (bs *blobStatter) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("repository blobstatter stat")
 	ref, err := reference.WithDigest(bs.name, dgst)
 	if err != nil {
 		return distribution.Descriptor{}, err
