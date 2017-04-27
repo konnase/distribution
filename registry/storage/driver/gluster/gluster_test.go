@@ -7,7 +7,7 @@ import (
 	//"github.com/docker/distribution/context"
 	storagedriver "github.com/docker/distribution/registry/storage/driver"
 	//"string"
-	"strings"
+	//"strings"
 	"testing"
 	"time"
 	//"github.com/gluster/gogfapi/gfapi"
@@ -56,39 +56,39 @@ func TestNew(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 
 	//Test reader()
-	fmt.Printf("\nTest Reader !\n")
-	file, err1 := d.Reader(nil, "/tests/hello.txt", 0)
-	if err1 != nil {
-		fmt.Printf("%v\n", err1)
-	}
-	var p0 [100]byte
-	p := p0[:]
-	n, err2 := file.Read(p)
-	if err2 != nil {
-		fmt.Printf("%v\n", err2)
-	}
-	tmp1 := byteToString(p)
-	fmt.Println(strings.EqualFold(tmp1, tmp))
-	times, err := time.Parse(time.RFC3339, tmp1)
+	// fmt.Printf("\nTest Reader !\n")
+	// file, err1 := d.Reader(nil, "/tests/data", 0)
+	// if err1 != nil {
+	// 	fmt.Printf("%v\n", err1)
+	// }
+	// var p0 [10000]byte
+	// p := p0[:]
+	// n, err2 := file.Read(p)
+	// if err2 != nil {
+	// 	fmt.Printf("%v\n", err2)
+	// }
+	// //tmp1 := byteToString(p)
+	// //fmt.Println(strings.EqualFold(tmp1, tmp))
+	// //times, err := time.Parse(time.RFC3339, tmp1)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// //fmt.Printf("Time is %v\n", times)
+	// fmt.Printf("%d bytes read!  !%s!\n", n, string(p))
+	// file.Close() //io.ReadCloser only has two methods ,that is Read() and Close()
+
+	//Test GetContent()  该方法里面的ioutil.ReadAll(rc)执行后不返回值，有待解决
+	fmt.Printf("\nTest GetContent !\n")
+	contents, err := d.GetContent(nil, "/tests/data")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Time is %v\n", times)
-	fmt.Printf("%d bytes read!  !%s!\n", n, string(p))
-	file.Close() //io.ReadCloser only has two methods ,that is Read() and Close()
-
-	//Test GetContent()  该方法里面的ioutil.ReadAll(rc)执行后不返回值，有待解决
-	// fmt.Printf("\nTest GetContent !\n")
-	// contents, err := d.GetContent(nil, "/tests/hello.txt")
+	//times, err := time.Parse(time.RFC3339, string(contents))
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
-	// times, err := time.Parse(time.RFC3339, string(contents))
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Printf("Get contents: %s\n", string(contents))
-	// fmt.Printf("Time is %v\n", times)
+	fmt.Printf("Get contents: %s\n", string(contents))
+	//fmt.Printf("Time is %v\n", times)
 
 	//Test PutContent()
 	// fmt.Printf("\nTest PutContent !\n")

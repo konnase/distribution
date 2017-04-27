@@ -44,7 +44,7 @@ func ParseNormalizedNamed(s string) (Named, error) {
 	if strings.ToLower(remoteName) != remoteName {
 		return nil, errors.New("invalid reference format: repository name must be lowercase")
 	}
-	fmt.Println("\n\nparseNormalizedNamed\n\n")
+	fmt.Println("parseNormalizedNamed")
 	ref, err := Parse(domain + "/" + remainder)
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func ParseNormalizedNamed(s string) (Named, error) {
 	if !isNamed {
 		return nil, fmt.Errorf("reference %s has no name", ref.String())
 	}
-	fmt.Println("\n\nparseNormalizedNamed finished\n\n")
+	fmt.Println("parseNormalizedNamed finished")
 	return named, nil
 }
 

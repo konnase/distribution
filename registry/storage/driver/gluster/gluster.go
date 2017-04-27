@@ -24,6 +24,7 @@ import (
 const (
 	driverName  = "gluster"
 	defaultPath = "/mnt/gluster"
+	maxByte     = 1024
 )
 
 type Parameters struct {
@@ -124,13 +125,25 @@ func (d *driver) GetContent(ctx context.Context, path string) ([]byte, error) {
 	}
 	defer rc.Close()
 	fmt.Println("reader has been executed!")
-	var p0 [2048]byte
-	p := p0[:]
-	_, err = rc.Read(p)
-	//p, err := ioutil.ReadAll(rc)
-	if err != nil {
-		return nil, err
+
+	//定义一个字节缓冲区，每次读maxByte字节的数据到p1中，判断此次读取的字节数是否小于maxByte，如果小于maxByte则表示读到文件末尾，则退出；否则继续读
+	var buf bytes.Buffer
+	var p0 [maxByte]byte
+	p1 := p0[:]
+	for {
+		n, err := rc.Read(p1)
+
+		if err != nil && err != io.EOF {
+			return nil, err
+		}
+		if n == 0 {
+			break
+		}
+		buf.Write(p1[:n])
+
 	}
+
+	p := buf.Bytes()
 	fmt.Println("GetContent has been executed!")
 	return p, nil
 }
@@ -433,5 +446,6 @@ func (fi fileInfo) ModTime() time.Time {
 
 // IsDir returns true if the path is a directory.
 func (fi fileInfo) IsDir() bool {
+	fmt.Println("called in gluster IsDir")
 	return fi.FileInfo.IsDir()
 }

@@ -68,7 +68,7 @@ type combinedLoggingHandler struct {
 }
 
 func (h loggingHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("called in handler loggingHandler\n")
+	fmt.Println("called in handler loggingHandler")
 	t := time.Now()
 	logger := makeLogger(w)
 	url := *req.URL

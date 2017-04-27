@@ -116,7 +116,7 @@ func pathFor(spec pathSpec) (string, error) {
 	// build a filesystem walker that converts a string path in one version,
 	// to an intermediate path object, than can be consumed and mapped by the
 	// other version.
-
+	fmt.Println("called in paths pathFor")
 	rootPrefix := []string{storagePathRoot, storagePathVersion}
 	repoPrefix := append(rootPrefix, "repositories")
 
@@ -450,7 +450,7 @@ func (repositoriesRootPathSpec) pathSpec() {}
 // 	<algorithm>/<first two bytes of digest>/<full digest>
 //
 func digestPathComponents(dgst digest.Digest, multilevel bool) ([]string, error) {
-	fmt.Println("called in paths")
+	fmt.Println("called in paths digestPathComponents")
 	if err := dgst.Validate(); err != nil {
 		return nil, err
 	}

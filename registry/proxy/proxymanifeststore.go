@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/docker/distribution"
@@ -41,6 +42,7 @@ func (pms proxyManifestStore) Exists(ctx context.Context, dgst digest.Digest) (b
 func (pms proxyManifestStore) Get(ctx context.Context, dgst digest.Digest, options ...distribution.ManifestServiceOption) (distribution.Manifest, error) {
 	// At this point `dgst` was either specified explicitly, or returned by the
 	// tagstore with the most recent association.
+	fmt.Println("proxymanifeststore Get")
 	var fromRemote bool
 	manifest, err := pms.localManifests.Get(ctx, dgst, options...)
 	if err != nil {

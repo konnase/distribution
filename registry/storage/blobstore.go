@@ -1,12 +1,12 @@
 package storage
 
 import (
-	"path"
-
+	"fmt"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/context"
 	"github.com/docker/distribution/registry/storage/driver"
 	"github.com/opencontainers/go-digest"
+	"path"
 )
 
 // blobStore implements the read side of the blob store interface over a
@@ -33,10 +33,10 @@ func (bs *blobStore) Get(ctx context.Context, dgst digest.Digest) ([]byte, error
 		case driver.PathNotFoundError:
 			return nil, distribution.ErrBlobUnknown
 		}
-
+		fmt.Println(err)
 		return nil, err
 	}
-
+	//fmt.Println("no error when get")
 	return p, err
 }
 
@@ -140,18 +140,30 @@ func (bs *blobStore) link(ctx context.Context, path string, dgst digest.Digest) 
 
 // readlink returns the linked digest at path.
 func (bs *blobStore) readlink(ctx context.Context, path string) (digest.Digest, error) {
+	fmt.Println(path)
 	content, err := bs.driver.GetContent(ctx, path)
 	if err != nil {
 		return "", err
 	}
 
-	linked, err := digest.Parse(string(content))
+	cont := byteToString(content)
+	fmt.Println(cont)
+	linked, err := digest.Parse(cont)
 	if err != nil {
 		return "", err
 	}
 
 	return linked, nil
 }
+
+// func byteToString(p []byte) string {
+// 	for i := 0; i < len(p); i++ {
+// 		if p[i] == 0 {
+// 			return string(p[0:i])
+// 		}
+// 	}
+// 	return string(p)
+// }
 
 // resolve reads the digest link at path and returns the blob store path.
 func (bs *blobStore) resolve(ctx context.Context, path string) (string, error) {
@@ -173,6 +185,7 @@ var _ distribution.BlobDescriptorService = &blobStatter{}
 // in the main blob store. If this method returns successfully, there is
 // strong guarantee that the blob exists and is available.
 func (bs *blobStatter) Stat(ctx context.Context, dgst digest.Digest) (distribution.Descriptor, error) {
+	fmt.Println("called in blobstore stat")
 	path, err := pathFor(blobDataPathSpec{
 		digest: dgst,
 	})
@@ -182,6 +195,7 @@ func (bs *blobStatter) Stat(ctx context.Context, dgst digest.Digest) (distributi
 	}
 
 	fi, err := bs.driver.Stat(ctx, path)
+	fmt.Println(path)
 	if err != nil {
 		switch err := err.(type) {
 		case driver.PathNotFoundError:
@@ -202,7 +216,7 @@ func (bs *blobStatter) Stat(ctx context.Context, dgst digest.Digest) (distributi
 	// TODO(stevvooe): Add method to resolve the mediatype. We can store and
 	// cache a "global" media type for the blob, even if a specific repo has a
 	// mediatype that overrides the main one.
-
+	fmt.Println("called in blobstore stat finished ")
 	return distribution.Descriptor{
 		Size: fi.Size(),
 

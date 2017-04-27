@@ -65,6 +65,7 @@ type manifestHandler struct {
 
 // GetManifest fetches the image manifest from the storage backend, if it exists.
 func (imh *manifestHandler) GetManifest(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GetImageManifest")
 	ctxu.GetLogger(imh).Debug("GetImageManifest")
 	manifests, err := imh.Repository.Manifests(imh)
 	if err != nil {
@@ -76,6 +77,9 @@ func (imh *manifestHandler) GetManifest(w http.ResponseWriter, r *http.Request) 
 	if imh.Tag != "" {
 		tags := imh.Repository.Tags(imh)
 		desc, err := tags.Get(imh, imh.Tag)
+
+		fmt.Println()
+		// TODO: bug
 		if err != nil {
 			if _, ok := err.(distribution.ErrTagUnknown); ok {
 				imh.Errors = append(imh.Errors, v2.ErrorCodeManifestUnknown.WithDetail(err))
@@ -96,11 +100,14 @@ func (imh *manifestHandler) GetManifest(w http.ResponseWriter, r *http.Request) 
 	if imh.Tag != "" {
 		options = append(options, distribution.WithTag(imh.Tag))
 	}
+	fmt.Println("manifest in middle")
+	//TODO:unexpected end of JSON input error
 	manifest, err = manifests.Get(imh, imh.Digest, options...)
 	if err != nil {
 		if _, ok := err.(distribution.ErrManifestUnknownRevision); ok {
 			imh.Errors = append(imh.Errors, v2.ErrorCodeManifestUnknown.WithDetail(err))
 		} else {
+			//fmt.Println("manifest has been executed")
 			imh.Errors = append(imh.Errors, errcode.ErrorCodeUnknown.WithDetail(err))
 		}
 		return
