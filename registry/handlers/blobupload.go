@@ -70,6 +70,7 @@ func blobUploadDispatcher(ctx *Context, r *http.Request) http.Handler {
 		fmt.Println(buh)
 		fmt.Println(buh.UUID)
 		fmt.Println(blobs)
+
 		if err != nil {
 			ctxu.GetLogger(ctx).Errorf("error resolving upload: %v", err)
 			if err == distribution.ErrBlobUploadUnknown {
